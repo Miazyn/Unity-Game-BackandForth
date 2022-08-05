@@ -2,13 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+[RequireComponent(typeof(CommandProcessor))]
+public class PlayerController : MonoBehaviour, IActor
 {
+    private CommandProcessor _commandProcessor;
 
     public float moveSpeed = 5f;
     public Transform movePoint;
 
-    public LayerMask whatStopsMovementLayer;
+    //public LayerMask whatStopsMovementLayer;
+    public Vector3 direction;
+    private void Awake()
+    {
+        _commandProcessor = GetComponent<CommandProcessor>();
+    }
     private void Start()
     {
         movePoint.parent = null;
@@ -16,29 +23,36 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
-
         if (Vector3.Distance(transform.position, movePoint.position) <= .05f)
         {
-            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f)
+            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
             {
-                Vector3 horizontalAddedMovement = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, 0f);
-                if (!Physics2D.OverlapCircle(movePoint.position + horizontalAddedMovement, .2f, whatStopsMovementLayer))
+                direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
+
+                if (direction != Vector3.zero)
                 {
-                    movePoint.position += horizontalAddedMovement;
+
+                    var moveCommand = new MoveCommand(this, direction, movePoint);
+                    _commandProcessor.ExecuteCommand(moveCommand);
+
                 }
-            }
-            //Disable diagonal movement by making this an else if statement.
-            if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
-            {
-                Vector3 verticalAddedMovement = new Vector3(0f, Input.GetAxisRaw("Vertical"), 0f);
-                if (!Physics2D.OverlapCircle(movePoint.position + verticalAddedMovement, .2f, whatStopsMovementLayer))
-                {
-                    movePoint.position += verticalAddedMovement;
-                }
+
             }
         }
+        //IMPLEMENT: GETKEY(); COnstant hold down for back properly.
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                Debug.Log("Backspace pressed");
+                _commandProcessor.Undo();
+            }
+        
     }
 
+    public void MoveFromTo(Vector3 startPos, Vector3 endPos)
+    {
+        throw new System.NotImplementedException();
+    }
 }
+
+
