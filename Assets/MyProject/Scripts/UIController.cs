@@ -6,7 +6,7 @@ using TMPro;
 public class UIController : MonoBehaviour
 {
     public RoundsCounter rounds;
-    private int whosTurnIsIt;
+    public int whosTurnIsIt;
 
     [Header("My Header")]
     public TextMeshProUGUI whosTurnText;

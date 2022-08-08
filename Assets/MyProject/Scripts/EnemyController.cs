@@ -14,6 +14,8 @@ public class EnemyController : MonoBehaviour, IActor
     private float moveSpeed = 5f;
 
     public int attackRange;
+    public int possibleMoves = 2;
+    int moveCounter = 0;
 
     public RoundsCounter rounds;
 
@@ -29,19 +31,26 @@ public class EnemyController : MonoBehaviour, IActor
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            rounds.EndRound();
+        }
+
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
         if (rounds.counter % 2 == 1)
         {
-            
-            if (Vector3.Distance(transform.position, movePoint.position) <= 0f)
+            if (moveCounter == possibleMoves)
+            {
+                Debug.Log("Case");
+                rounds.EndRound();
+                moveCounter = 0;
+            }
+            else if (Vector3.Distance(transform.position, movePoint.position) <= 0f)
             {
                 #region[Direction Check]
                 directionCheck();
                 #endregion
             }
-
-
-           
         }
         ///TESTING FOR LATER USE INTO IF CONDITIONS
         RaycastHit2D hitinfo = Physics2D.Raycast(transform.position, -transform.up * attackRange);
@@ -57,7 +66,7 @@ public class EnemyController : MonoBehaviour, IActor
         #region[X Check]
         if (player.position.x < transform.position.x)
         {
-            if(player.position == new Vector3(transform.position.x - 1, transform.position.y, 0))
+            if (player.position == new Vector3(transform.position.x - 1, transform.position.y, 0))
             {
                 direction = Vector3.zero;
             }
@@ -65,7 +74,7 @@ public class EnemyController : MonoBehaviour, IActor
             {
                 direction = new Vector3(-1, 0, 0);
             }
-            
+
 
         }
         else if (player.position.x > transform.position.x)
@@ -112,9 +121,10 @@ public class EnemyController : MonoBehaviour, IActor
         /////////////////////////////////////////////////////////////////////////////////
         if (direction != Vector3.zero)
         {
-
+            
             var moveCommand = new MoveCommand(this, direction, movePoint);
             _commandProcessor.ExecuteCommand(moveCommand);
+            moveCounter++;
         }
 
     }

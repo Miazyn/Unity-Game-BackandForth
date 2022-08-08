@@ -1024,6 +1024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rounds: {fileID: 0}
+  whosTurnIsIt: 0
   whosTurnText: {fileID: 1971502553}
 --- !u!114 &1820708081
 MonoBehaviour:
@@ -1085,7 +1086,8 @@ MonoBehaviour:
   player: {fileID: 2027048578}
   direction: {x: 0, y: 0, z: 0}
   movePoint: {fileID: 1554589823}
-  attackRange: 2
+  attackRange: 3
+  possibleMoves: 2
   rounds: {fileID: 1820708081}
 --- !u!4 &1962076214
 Transform:
