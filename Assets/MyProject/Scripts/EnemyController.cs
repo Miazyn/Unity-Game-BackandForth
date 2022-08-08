@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,28 +26,11 @@ public class EnemyController : MonoBehaviour, IActor
     private void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, movePoint.position) <= .05f)
+        if (Vector3.Distance(transform.position, movePoint.position) <= 0f)
         {
-
-            if (player.position.x < transform.position.x)
-            {
-                direction = new Vector3(-1, 0, 0);
-            }
-            else if (player.position.x > transform.position.x)
-            {
-                direction = new Vector3(1, 0, 0);
-            }
-            else if(player.position.x == transform.position.x + 1|| player.position.x == transform.position.x - 1) 
-            {
-                Debug.Log("Stop moving. Player infront of me");
-                direction = Vector3.zero;
-            }
-            if (direction != Vector3.zero)
-            {
-                var moveCommand = new MoveCommand(this, direction, movePoint);
-                _commandProcessor.ExecuteCommand(moveCommand);
-            }
-
+            #region[Direction Check]
+            directionCheck();
+            #endregion
         }
 
 
@@ -58,8 +42,75 @@ public class EnemyController : MonoBehaviour, IActor
         //}
     }
 
+    private void directionCheck()
+    {
+        #region[X Check]
+        if (player.position.x < transform.position.x)
+        {
+            if(player.position == new Vector3(transform.position.x - 1, transform.position.y, 0))
+            {
+                direction = Vector3.zero;
+            }
+            else
+            {
+                direction = new Vector3(-1, 0, 0);
+            }
+            
+
+        }
+        else if (player.position.x > transform.position.x)
+        {
+            if (player.position == new Vector3(transform.position.x + 1, transform.position.y, 0))
+            {
+                direction = Vector3.zero;
+            }
+            else
+            {
+                direction = new Vector3(1, 0, 0);
+            }
+        }
+        #endregion
+        else if (player.position.x == transform.position.x || player.position.x == transform.position.x)
+        {
+            /////////////////////////////////////////////////////////////////////////////////////////////
+            #region[Y Check]
+            if (player.position.y < transform.position.y)
+            {
+                if (player.position.y == transform.position.y - 1)
+                {
+                    direction = Vector3.zero;
+                }
+                else
+                {
+                    direction = new Vector3(0, -1, 0);
+                }
+
+            }
+            else if (player.position.y > transform.position.y)
+            {
+                if (player.position.y == transform.position.y + 1)
+                {
+                    direction = Vector3.zero;
+                }
+                else
+                {
+                    direction = new Vector3(0, 1, 0);
+                }
+            }
+            #endregion
+        }
+        /////////////////////////////////////////////////////////////////////////////////
+        if (direction != Vector3.zero)
+        {
+
+            var moveCommand = new MoveCommand(this, direction, movePoint);
+            _commandProcessor.ExecuteCommand(moveCommand);
+        }
+
+    }
+
     public void MoveFromTo(Vector3 startPos, Vector3 endPos)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }
