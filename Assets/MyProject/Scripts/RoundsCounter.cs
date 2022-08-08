@@ -17,11 +17,14 @@ public class RoundsCounter : MonoBehaviour
 
     public void EndRound()
     {
+        
         OnTurnEnded?.Invoke(this, EventArgs.Empty);
+        
     }
 
     private void RoundsCounter_OnTurnEnded(object sender, EventArgs e)
     {
+        
         counter++;
     }
 

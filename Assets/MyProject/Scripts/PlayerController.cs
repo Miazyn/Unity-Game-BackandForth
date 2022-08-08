@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour, IActor
     public Transform movePoint;
 
     public RoundsCounter rounds;
+    int possibleMoves = 2;
+    int moveCounter = 0;
+    public UIController ui;
 
     //public LayerMask whatStopsMovementLayer;
     public Vector3 direction;
@@ -25,21 +28,38 @@ public class PlayerController : MonoBehaviour, IActor
 
     private void Update()
     {
+        Debug.Log(moveCounter + "Other" + possibleMoves);
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
         if (rounds.counter % 2 == 0)
         {
-            if (Vector3.Distance(transform.position, movePoint.position) <= .05f)
-            {
-                DirectionCheck();
-            }
+            ui.MoveChangedText(possibleMoves - moveCounter);
 
-            if (Vector3.Distance(transform.position, movePoint.position) <= .05f)
+            if (moveCounter == possibleMoves)
             {
-                if (Input.GetKey(KeyCode.Backspace))
+                ui.MoveChangedText(possibleMoves - moveCounter);
+                //rounds.EndRound();
+                //ADD FUNCTION TO MAKE MOVES POSSIBLE WHILE HAVING MOVES LEFT
+                //-> BACK AND FORTH
+            }
+            else if (Vector3.Distance(transform.position, movePoint.position) <= .05f)
+            {
+                if (possibleMoves - moveCounter != 0)
                 {
-                    _commandProcessor.Undo();
+                    DirectionCheck();
                 }
             }
+            if (moveCounter != 0)
+            {
+                if (Input.GetKeyDown(KeyCode.Backspace))
+                {
+                    _commandProcessor.Undo();
+                    moveCounter--;
+                }
+            }
+        }
+        else
+        {
+            moveCounter = 0;
         }
 
     }
@@ -49,11 +69,12 @@ public class PlayerController : MonoBehaviour, IActor
         if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
         {
             direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
-            Debug.Log(direction);
+            
             if (direction != Vector3.zero)
             {
                 var moveCommand = new MoveCommand(this, direction, movePoint);
                 _commandProcessor.ExecuteCommand(moveCommand);
+                moveCounter++;
             }
         }
     }
