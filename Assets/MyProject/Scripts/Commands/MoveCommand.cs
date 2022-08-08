@@ -16,7 +16,7 @@ public class MoveCommand : Command
     {
         //_actor.transform.position = Vector3.MoveTowards(_actor.transform.position, _movePoint.position, 5 * Time.deltaTime);
 
-
+        Debug.Log("Moving");
         _movePoint.position += _directionActorMovement;
 
     }

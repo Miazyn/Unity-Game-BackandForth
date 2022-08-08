@@ -1082,10 +1082,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd4e407d17ae8d544827fcb304eb9dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tester: 0
   player: {fileID: 2027048578}
   direction: {x: 0, y: 0, z: 0}
   movePoint: {fileID: 1554589823}
+  distanceToPlayerX: 0
+  distanceToPlayerY: 0
 --- !u!4 &1962076214
 Transform:
   m_ObjectHideFlags: 0

@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour, IActor
             if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
             {
                 direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
+                Debug.Log(direction);
                 if (direction != Vector3.zero)
                 {
                     var moveCommand = new MoveCommand(this, direction, movePoint);
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour, IActor
                 }
             }
         }
+
         if (Vector3.Distance(transform.position, movePoint.position) <= .05f)
         {
             if (Input.GetKey(KeyCode.Backspace))
