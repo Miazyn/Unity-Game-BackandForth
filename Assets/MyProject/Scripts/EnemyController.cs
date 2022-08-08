@@ -13,6 +13,10 @@ public class EnemyController : MonoBehaviour, IActor
     private CommandProcessor _commandProcessor;
     private float moveSpeed = 5f;
 
+    public int attackRange;
+
+    public RoundsCounter rounds;
+
     private void Awake()
     {
         _commandProcessor = GetComponent<CommandProcessor>();
@@ -26,20 +30,26 @@ public class EnemyController : MonoBehaviour, IActor
     private void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, movePoint.position) <= 0f)
+        if (rounds.counter % 2 == 1)
         {
-            #region[Direction Check]
-            directionCheck();
-            #endregion
+            
+            if (Vector3.Distance(transform.position, movePoint.position) <= 0f)
+            {
+                #region[Direction Check]
+                directionCheck();
+                #endregion
+            }
+
+
+           
         }
+        ///TESTING FOR LATER USE INTO IF CONDITIONS
+        RaycastHit2D hitinfo = Physics2D.Raycast(transform.position, -transform.up * attackRange);
 
-
-        //RaycastHit2D hitinfo = Physics2D.Raycast(transform.position, -transform.up * 10);
-
-        //if (hitinfo)
-        //{
-        //    Debug.Log("hit sth");
-        //}
+        if (hitinfo)
+        {
+            Debug.Log("hit sth");
+        }
     }
 
     private void directionCheck()
@@ -112,5 +122,10 @@ public class EnemyController : MonoBehaviour, IActor
     public void MoveFromTo(Vector3 startPos, Vector3 endPos)
     {
         throw new NotImplementedException();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(transform.position, -transform.up * attackRange);
     }
 }

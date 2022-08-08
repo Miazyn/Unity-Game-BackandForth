@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour, IActor
     public float moveSpeed = 5f;
     public Transform movePoint;
 
+    public RoundsCounter rounds;
+
     //public LayerMask whatStopsMovementLayer;
     public Vector3 direction;
     private void Awake()
@@ -24,29 +26,36 @@ public class PlayerController : MonoBehaviour, IActor
     private void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, movePoint.position) <= .05f)
+        if (rounds.counter % 2 == 0)
         {
-            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
+            if (Vector3.Distance(transform.position, movePoint.position) <= .05f)
             {
-                direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
-                Debug.Log(direction);
-                if (direction != Vector3.zero)
+                DirectionCheck();
+            }
+
+            if (Vector3.Distance(transform.position, movePoint.position) <= .05f)
+            {
+                if (Input.GetKey(KeyCode.Backspace))
                 {
-                    var moveCommand = new MoveCommand(this, direction, movePoint);
-                    _commandProcessor.ExecuteCommand(moveCommand);
+                    _commandProcessor.Undo();
                 }
             }
         }
 
-        if (Vector3.Distance(transform.position, movePoint.position) <= .05f)
+    }
+
+    private void DirectionCheck()
+    {
+        if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f || Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f)
         {
-            if (Input.GetKey(KeyCode.Backspace))
+            direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0f);
+            Debug.Log(direction);
+            if (direction != Vector3.zero)
             {
-                _commandProcessor.Undo();
+                var moveCommand = new MoveCommand(this, direction, movePoint);
+                _commandProcessor.ExecuteCommand(moveCommand);
             }
         }
-
-        
     }
 
     public void MoveFromTo(Vector3 startPos, Vector3 endPos)
@@ -57,7 +66,7 @@ public class PlayerController : MonoBehaviour, IActor
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "_itemToCollect")
+        if (collision.gameObject.tag == "_itemToCollect")
         {
             collision.gameObject.SetActive(false);
         }

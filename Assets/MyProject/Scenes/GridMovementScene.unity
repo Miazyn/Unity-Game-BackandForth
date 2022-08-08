@@ -1085,6 +1085,8 @@ MonoBehaviour:
   player: {fileID: 2027048578}
   direction: {x: 0, y: 0, z: 0}
   movePoint: {fileID: 1554589823}
+  attackRange: 2
+  rounds: {fileID: 1820708081}
 --- !u!4 &1962076214
 Transform:
   m_ObjectHideFlags: 0
@@ -1093,7 +1095,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1962076212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 4, z: 0}
+  m_LocalPosition: {x: 1, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 167336750}
@@ -1297,6 +1299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   movePoint: {fileID: 1390842707}
+  rounds: {fileID: 1820708081}
   direction: {x: 0, y: 0, z: 0}
 --- !u!114 &2027048580
 MonoBehaviour:
