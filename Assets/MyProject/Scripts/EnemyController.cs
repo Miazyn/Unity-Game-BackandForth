@@ -20,6 +20,7 @@ public class EnemyController : MonoBehaviour, IActor
     public RoundsCounter rounds;
     public UIController ui;
 
+
     private void Awake()
     {
         _commandProcessor = GetComponent<CommandProcessor>();
@@ -63,11 +64,11 @@ public class EnemyController : MonoBehaviour, IActor
             moveCounter = 0;
         }
         ///TESTING FOR LATER USE INTO IF CONDITIONS
-        RaycastHit2D hitinfo = Physics2D.Raycast(transform.position, -transform.up * attackRange);
+        RaycastHit2D hitinfo = Physics2D.Raycast(transform.position, transform.up * attackRange);
 
         if (hitinfo)
         {
-            Debug.Log("hit sth");
+
         }
     }
 
@@ -131,9 +132,7 @@ public class EnemyController : MonoBehaviour, IActor
         /////////////////////////////////////////////////////////////////////////////////
         if (direction != Vector3.zero)
         {
-
-            var moveCommand = new MoveCommand(this, direction, movePoint);
-            _commandProcessor.ExecuteCommand(moveCommand);
+            movePoint.transform.position += direction;
             moveCounter++;
         }
 
@@ -146,6 +145,12 @@ public class EnemyController : MonoBehaviour, IActor
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawRay(transform.position, -transform.up * attackRange);
+        Gizmos.DrawRay(transform.position, transform.up * attackRange);
+    }
+
+
+    public void RotateMe()
+    {
+        transform.Rotate(new Vector3(0, 0, 90));
     }
 }
