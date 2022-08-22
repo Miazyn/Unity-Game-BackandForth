@@ -10,7 +10,6 @@ public class Grid : MonoBehaviour
     [SerializeField] int gridWidth, gridHeight;
     [SerializeField] Tile tilePrefab;
 
-    [SerializeField] GameObject cam;
 
     private void Start()
     {
@@ -32,11 +31,10 @@ public class Grid : MonoBehaviour
                 Debug.Log(isOffset);
                 spawnedTile.Init(isOffset);
 
-             }
-        }
-        
 
-        //cam.transform.position = new Vector3((float)gridWidth/2 -0.5f, (float)gridHeight / 2 - 0.5f, -10);
+            }
+        }
+
     }
 
     public Tile GetTileAtPosition(Vector2 pos)

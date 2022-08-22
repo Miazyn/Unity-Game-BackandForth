@@ -25,8 +25,8 @@ public class GridEditor : Editor
             }
         }
 
-        Handles.DrawLine(new Vector3(0, height),new Vector3(width,height));
-        Handles.DrawLine(new Vector3(width, 0), new Vector3(width,height));
+        Handles.DrawLine(new Vector3(0, height), new Vector3(width, height));
+        Handles.DrawLine(new Vector3(width, 0), new Vector3(width, height));
 
     }
 
