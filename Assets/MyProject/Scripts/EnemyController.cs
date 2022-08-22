@@ -33,11 +33,7 @@ public class EnemyController : MonoBehaviour, IActor
 
     private void Update()
     {
-        ////MOVE THIS ENTIRE THING INTO A DIFFERENT UNDO
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            rounds.EndRound();
-        }
+        
 
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
         if (rounds.counter % 2 == 1)
@@ -62,13 +58,6 @@ public class EnemyController : MonoBehaviour, IActor
         else
         {
             moveCounter = 0;
-        }
-        ///TESTING FOR LATER USE INTO IF CONDITIONS
-        RaycastHit2D hitinfo = Physics2D.Raycast(transform.position, transform.up * attackRange);
-
-        if (hitinfo)
-        {
-
         }
     }
 
@@ -142,12 +131,6 @@ public class EnemyController : MonoBehaviour, IActor
     {
         throw new NotImplementedException();
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawRay(transform.position, transform.up * attackRange);
-    }
-
 
     public void RotateMe()
     {

@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour, IActor
 
     private void Update()
     {
-        Debug.Log(moveCounter + "Other" + possibleMoves);
+        
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
         if (rounds.counter % 2 == 0)
         {
