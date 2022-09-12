@@ -5,18 +5,19 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
+    public static Grid Instance;
+
     Dictionary<Vector2, Tile> TileTracker;
 
     [SerializeField] int gridWidth, gridHeight;
     [SerializeField] Tile tilePrefab;
 
-
-    private void Start()
+    private void Awake()
     {
-        GenerateGrid();    
+        Instance = this;
     }
 
-    void GenerateGrid()
+    public void GenerateGrid()
     {
         TileTracker = new Dictionary<Vector2, Tile>();
       
@@ -35,7 +36,15 @@ public class Grid : MonoBehaviour
             }
         }
 
+        GameManager.Instance.UpdateGameState(GameManager.GameState.PlayerTurn);
+
     }
+
+    public Tile GetTileOfUnit()
+    {
+        return null;
+    }
+
 
     public Tile GetTileAtPosition(Vector2 pos)
     {
